@@ -1,5 +1,10 @@
 package pl.umk.mat.booking.model;
 
+
+
+
+import pl.umk.mat.booking.validation.constraints.Password;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.ArrayList;
@@ -15,6 +20,7 @@ public class Employee {
     private String name;
     @Email
     private String email;
+    @Password
     private String password;
     private String photoUrl;
     @OneToMany(mappedBy = "employee")
