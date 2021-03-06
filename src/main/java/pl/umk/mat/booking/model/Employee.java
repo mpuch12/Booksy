@@ -8,7 +8,9 @@ import pl.umk.mat.booking.validation.constraints.Password;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Employee {
@@ -16,7 +18,8 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String role;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private Set<UserRole> roles = new HashSet<>();
     private String name;
     @Email
     private String email;
@@ -34,14 +37,6 @@ public class Employee {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getName() {
@@ -91,6 +86,15 @@ public class Employee {
     public void setLeaveList(List<Holiday> leaveList) {
         this.leaveList = leaveList;
     }
+
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
+
 
 
 }
