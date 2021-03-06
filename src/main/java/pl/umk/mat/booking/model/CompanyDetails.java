@@ -11,10 +11,10 @@ public class CompanyDetails {
     private Long id;
     private String name;
     private String address;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "works_photo_id", referencedColumnName="id")
     private List<Photo> worksPhotos;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "workshop_photo_id", referencedColumnName="id")
     private List<Photo> workshopPhotos;
     @OneToMany(mappedBy = "id")

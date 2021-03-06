@@ -8,7 +8,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     @JoinColumn(name = "client_id")
     private Client client;
     @ManyToOne
@@ -17,7 +17,7 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Term termOfService;
 
     public Long getId() {
