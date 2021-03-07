@@ -1,6 +1,7 @@
 package pl.umk.mat.booking.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,6 +13,7 @@ public class WorkHours {
     private LocalDateTime start;
     private LocalDateTime end;
     private Long timeStep;
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;

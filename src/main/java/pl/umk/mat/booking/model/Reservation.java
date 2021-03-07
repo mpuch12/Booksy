@@ -1,6 +1,7 @@
 package pl.umk.mat.booking.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Reservation {
@@ -8,15 +9,19 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     @JoinColumn(name = "client_id")
     private Client client;
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "service_id")
     private Service selectedService;
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+    @NotNull
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Term termOfService;
 

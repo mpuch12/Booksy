@@ -7,6 +7,7 @@ import pl.umk.mat.booking.validation.constraints.Password;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Employee {
     private Long id;
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     private Set<UserRole> roles = new HashSet<>();
+    @NotNull
     private String name;
     @Email
     private String email;

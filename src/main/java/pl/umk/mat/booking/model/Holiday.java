@@ -4,6 +4,7 @@ package pl.umk.mat.booking.model;
 import pl.umk.mat.booking.model.Employee;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +15,7 @@ public class Holiday {
     private Long id;
     private LocalDateTime start;
     private LocalDateTime end;
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;

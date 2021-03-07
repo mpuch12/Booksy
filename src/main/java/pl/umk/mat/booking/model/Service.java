@@ -1,6 +1,8 @@
 package pl.umk.mat.booking.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -9,9 +11,13 @@ public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String name;
+    @NotNull
+    @Min(0)
     private int price;
     private int timeOfServiceInMinutes;
+    @NotNull
     @ManyToMany
     @JoinTable(name = "employee_services",
             joinColumns = {@JoinColumn(name="service_id", referencedColumnName="id")},

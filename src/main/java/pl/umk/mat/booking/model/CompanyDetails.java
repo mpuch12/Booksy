@@ -1,6 +1,7 @@
 package pl.umk.mat.booking.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -9,7 +10,9 @@ public class CompanyDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String name;
+    @NotNull
     private String address;
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "works_photo_id", referencedColumnName="id")
