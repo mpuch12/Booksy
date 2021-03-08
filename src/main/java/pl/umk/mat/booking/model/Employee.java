@@ -24,6 +24,7 @@ public class Employee {
     @NotNull
     private String name;
     @Email
+    @Column(unique = true)
     private String email;
     @Password
     private String password;
