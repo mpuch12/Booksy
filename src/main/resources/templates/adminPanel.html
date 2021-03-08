@@ -7,11 +7,19 @@
 <body>
 <h1>Panel admina</h1>
 
-<a>Dodaj adres firmy</a>
-<button onclick="myFunction('myDIV')">Dodaj</button>
+<a>Nazwa firmy</a>
+<button onclick="myFunction('formName')">Pokaż</button>
 
-<form id="myDIV" STYLE="display: none" action="#" th:action="@{admin/update(field='name')}" method="post" th:object="${company}">
+<form id="formName" STYLE="display: none" action="#" th:action="@{admin/update(field='name')}" method="post" th:object="${company}">
     <input th:field="${company.name}">
+    <input type="submit" value="Zmień" />
+</form>
+
+<a><br>Adres firmy</a>
+<button onclick="myFunction('formAddress')">Pokaż</button>
+
+<form id="formAddress" STYLE="display: none" action="#" th:action="@{admin/update(field='address')}" method="post" th:object="${company}">
+    <input th:field="${company.address}">
     <input type="submit" value="Zmień" />
 </form>
 
