@@ -2,6 +2,7 @@ package pl.umk.mat.booking.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,15 +15,15 @@ public class CompanyDetails {
     private String name;
     @NotNull
     private String address;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "works_photo_id", referencedColumnName="id")
-    private List<Photo> worksPhotos;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "workshop_photo_id", referencedColumnName="id")
-    private List<Photo> workshopPhotos;
-    @OneToMany(mappedBy = "id")
-    private List<Employee> employees;
+    private List<Photo> photos = new ArrayList<>();
+    @OneToMany
+    private List<Employee> employees = new ArrayList<>();
 
+    public void addPhoto(Photo photo){
+        this.photos.add(photo);
+    }
     public Long getId() {
         return id;
     }
@@ -47,20 +48,12 @@ public class CompanyDetails {
         this.address = address;
     }
 
-    public List<Photo> getWorksPhotos() {
-        return worksPhotos;
+    public List<Photo> getPhotos() {
+        return photos;
     }
 
-    public void setWorksPhotos(List<Photo> worksPhotos) {
-        this.worksPhotos = worksPhotos;
-    }
-
-    public List<Photo> getWorkshopPhotos() {
-        return workshopPhotos;
-    }
-
-    public void setWorkshopPhotos(List<Photo> workshopPhotos) {
-        this.workshopPhotos = workshopPhotos;
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 
     public List<Employee> getEmployees() {

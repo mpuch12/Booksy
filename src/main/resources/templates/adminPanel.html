@@ -7,22 +7,60 @@
 <body>
 <h1>Panel admina</h1>
 
+<p id="id_message" th:text="${message}" onclick="myFunction('id_message')" th:if="${message  ne null}"></p>
+
 <a>Nazwa firmy</a>
 <button onclick="myFunction('formName')">Pokaż</button>
 
-<form id="formName" STYLE="display: none" action="#" th:action="@{admin/update(field='name')}" method="post" th:object="${company}">
-    <input th:field="${company.name}">
-    <input type="submit" value="Zmień" />
-</form>
+    <form id="formName" STYLE="display: none" action="#" th:action="@{admin/update(field='name')}" method="post" th:object="${company}">
+        <input th:field="${company.name}">
+        <input type="submit" value="Zmień" />
+    </form>
+
 
 <a><br>Adres firmy</a>
 <button onclick="myFunction('formAddress')">Pokaż</button>
 
-<form id="formAddress" STYLE="display: none" action="#" th:action="@{admin/update(field='address')}" method="post" th:object="${company}">
-    <input th:field="${company.address}">
-    <input type="submit" value="Zmień" />
-</form>
+    <form id="formAddress" STYLE="display: none" action="#" th:action="@{admin/update(field='address')}" method="post" th:object="${company}">
+        <input th:field="${company.address}">
+        <input type="submit" value="Zmień" />
+    </form>
 
+<a><br>Zdjęcia twoich prac</a>
+<button onclick="myFunction('workPhotos')">Pokaż</button>
+    <div id="workPhotos" STYLE="display: none">
+        <form  method="post"  th:action="@{/admin/photo/upload(type='work')}" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="file" name="file" class="form-control-file">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload File</button>
+        </form>
+        <tr th:each="work: ${workPhotos}" th:object="${photo}">
+            <div>
+                <img th:src="@{${'/work/'+work.path}}" width="120" height="120"/>
+                <form  action="#" th:action="@{/admin/photo/delete(id=${work.id})}" method="post" >
+                    <input type="submit" value="Usuń" />
+                </form>
+            </div>
+        </tr>
+    </div>
+
+<a><br>Zdjęcia twojego zakładu</a>
+<button onclick="myFunction('workshopPhotos')">Pokaż</button>
+<div id="workshopPhotos" STYLE="display: none">
+    <form  method="post"  th:action="@{/admin/photo/upload(type='workshop')}" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="file" name="file" class="form-control-file">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload File</button>
+    </form>
+    <tr th:each="workshop: ${workshopPhotos}" th:object="${photo}">
+        <img th:src="@{${'/workshop/' + workshop.path}}" width="120" height="120"/>
+        <form  action="#" th:action="@{/admin/photo/delete(id=${workshop.id})}" method="post" >
+            <input type="submit" value="Usuń" />
+        </form>
+    </tr>
+</div>
 
 <script>
     function myFunction(a) {
