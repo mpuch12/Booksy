@@ -40,8 +40,9 @@ public class AdminService {
         switch (field) {
             case "name" -> savedCompanyDetails.setName(companyDetails.getName());
             case "address" -> savedCompanyDetails.setAddress(companyDetails.getAddress());
-            default -> companyDetailsRepository.save(savedCompanyDetails);
         }
+
+        companyDetailsRepository.save(savedCompanyDetails);
 
     }
 
