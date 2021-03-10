@@ -4,15 +4,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pl.umk.mat.booking.model.CompanyDetails;
+import pl.umk.mat.booking.model.Employee;
 import pl.umk.mat.booking.model.Photo;
 import pl.umk.mat.booking.repository.CompanyDetailsRepository;
 import pl.umk.mat.booking.repository.EmployeeRepository;
 import pl.umk.mat.booking.repository.PhotoRepository;
+import pl.umk.mat.booking.repository.ServiceRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,11 +26,13 @@ public class AdminService {
     private EmployeeRepository employeeRepository;
     private CompanyDetailsRepository companyDetailsRepository;
     private PhotoRepository photoRepository;
+    private ServiceRepository serviceRepository;
 
-    public AdminService(EmployeeRepository employeeRepository, CompanyDetailsRepository companyDetailsRepository, PhotoRepository photoRepository) {
+    public AdminService(EmployeeRepository employeeRepository, CompanyDetailsRepository companyDetailsRepository, PhotoRepository photoRepository, ServiceRepository serviceRepository) {
         this.employeeRepository = employeeRepository;
         this.companyDetailsRepository = companyDetailsRepository;
         this.photoRepository = photoRepository;
+        this.serviceRepository = serviceRepository;
     }
 
     public CompanyDetails getCompanyDetails() {
@@ -75,5 +80,31 @@ public class AdminService {
     public void deletePhoto(Long id) {
         Optional<Photo> photo = photoRepository.findById(id);
         photoRepository.delete(photo.get());
+    }
+
+    public List<pl.umk.mat.booking.model.Service> getAllServices() {
+        return serviceRepository.findAll();
+    }
+
+    public List<Employee> getAllEmployee() {
+        return employeeRepository.findAll();
+    }
+
+    public boolean saveService(pl.umk.mat.booking.model.Service service, long[] selectedEmployees) {
+        if(selectedEmployees != null)
+            for (long selectedEmployee : selectedEmployees)
+                if (employeeRepository.existsById(selectedEmployee))
+                    service.getSelectedEmployees().add(employeeRepository.findById(selectedEmployee).get());
+
+        try {
+            serviceRepository.save(service);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    public pl.umk.mat.booking.model.Service getSpecifiedService(Long id) {
+        return serviceRepository.findById(id).get();
     }
 }

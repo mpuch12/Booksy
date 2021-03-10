@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.umk.mat.booking.model.CompanyDetails;
 import pl.umk.mat.booking.model.Photo;
+import pl.umk.mat.booking.model.Service;
 import pl.umk.mat.booking.service.AdminService;
 
 import java.util.List;
@@ -60,4 +61,36 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/admin/service")
+    public String serviceMenu(Model model){
+        model.addAttribute("serviceList", adminService.getAllServices());
+        model.addAttribute("service", new Service());
+        model.addAttribute("employeeList", adminService.getAllEmployee());
+        return "servicePanel";
+    }
+
+    @PostMapping("/admin/service/add")
+    public String addNewService(@ModelAttribute Service service, @RequestParam(value = "selected", required = false) long[] selectedEmployees, RedirectAttributes attributes){
+        if(adminService.saveService(service, selectedEmployees))
+            attributes.addFlashAttribute("message", "Usługa dodana pomyślnie");
+        else
+            attributes.addFlashAttribute("message", "Wystąpił błąd zapisu");
+        return "redirect:/admin/service";
+    }
+
+    @GetMapping("admin/service/change")
+    private String getServiceInfo(@RequestParam Long id, Model model,RedirectAttributes attributes){
+        model.addAttribute("service", adminService.getSpecifiedService(id));
+        model.addAttribute("employeeList", adminService.getAllEmployee());
+        return "modifyService";
+    }
+
+    @PostMapping("admin/service/change")
+    private String changeServiceInfo (@ModelAttribute Service service, @RequestParam(value = "selected", required = false) long[] selectedEmployees,RedirectAttributes attributes){
+        if(adminService.saveService(service, selectedEmployees))
+            attributes.addFlashAttribute("message", "Zmiany zostały zaakceptowane pomyślnie");
+        else
+            attributes.addFlashAttribute("message", "Wystąpił błąd podczas zapisywania zmian");
+        return "redirect:/admin/service";
+    }
 }

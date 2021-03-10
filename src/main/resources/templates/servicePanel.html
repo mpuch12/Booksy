@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Panel główny</title>
+<style>
+    table, td, th {
+        border: 1px solid black;
+    }
+</style>
+</head>
+<body>
+<h1>Twoje usługi</h1>
+
+<p id="id_message" th:text="${message}" onclick="myFunction('id_message')" th:if="${message  ne null}"></p>
+
+<button onclick="myFunction('addService_id')">Dodaj usługę</button>
+<div id="addService_id" STYLE="display: none">
+    <form action="#"  th:action="@{/admin/service/add}" method="post" th:object="${service}">
+        <a>Nazwa</a><br>
+        <input type="text" th:field="*{name}"><br>
+        <a>Cena</a><br>
+        <input type="number" th:field="*{price}" placeholder=""><br>
+        <a>Czas</a><br>
+        <input type="number" th:field="*{timeOfServiceInMinutes}"><br>
+        <a>Pracownicy</a></br>
+        <td th:if="${employeeList ne null}">
+            <a th:each="employee : ${employeeList}">
+                <input type="checkbox" name="selected" th:value="${employee.id}"/>
+                <label th:text="${employee.name}"></label><br>
+            </a>
+        </td>
+        <input type="submit" value="Dodaj">
+    </form>
+</div>
+
+<button onclick="myFunction('showService_id')">Pokaż usługi</button>
+<div id="showService_id" STYLE="display: none">
+    <table style="width: 100%; border-collapse: collapse" >
+        <tr>
+            <th>Nazwa</th>
+            <th>Cena</th>
+            <th>Czas</th>
+            <th>Pracownicy</th>
+            <th>Zarządzaj</th>
+        </tr>
+        <tr th:each="service: ${serviceList}" th:object="${service}" >
+            <td th:text="*{name}"></td>
+            <td th:text="*{price}"></td>
+            <td th:text="*{timeOfServiceInMinutes}"></td>
+            <td>
+                <li th:each="employee: *{selectedEmployees}" th:text="${employee.name}"> </li>
+            </td>
+            <td>
+                <a class="ui-button" th:href="@{/admin/service/change(id=${service.id})}" >Modyfikuj</a>
+            </td>
+
+        </tr>
+    </table>
+
+
+</div>
+
+<script>
+    function myFunction(a) {
+        var x = document.getElementById(a);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Panel główny</title>
+</head>
+<body>
+    <div id="modify_id" >
+        <form action="#" method="post" th:action="@{/admin/service/change(id=${service.id})}"  th:object="${service}">
+            <a>Nazwa</a><br>
+            <input type="text"  th:field="*{name}"><br>
+            <a>Cena</a><br>
+            <input type="number" th:field="*{price}"><br>
+            <a>Czas</a><br>
+            <input type="number" th:field="*{timeOfServiceInMinutes}"><br>
+            <a>Pracownicy</a><br>
+            <td th:if="${employeeList ne null}">
+                <a th:each="employee : ${employeeList}">
+                    <input th:if="${#lists.contains(service.selectedEmployees,employee)}" type="checkbox" name="selected" th:value="${employee.id}" checked/>
+                    <input th:if="${not #lists.contains(service.selectedEmployees,employee)}" type="checkbox" name="selected" th:value="${employee.id}" />
+                    <label th:text="${employee.name}"></label><br>
+                </a>
+            </td><br>
+            <input type="submit" value="Zmień">
+        </form>
+    </div>
+</body>
+</html>

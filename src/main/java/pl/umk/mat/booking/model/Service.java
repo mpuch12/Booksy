@@ -3,6 +3,7 @@ package pl.umk.mat.booking.model;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class Service {
             joinColumns = {@JoinColumn(name="service_id", referencedColumnName="id")},
             inverseJoinColumns = {@JoinColumn(name="employee_id", referencedColumnName="id")}
     )
-    private List<Employee> selectedEmployees;
+    private List<Employee> selectedEmployees = new ArrayList<>();
 
     public Long getId() {
         return id;
