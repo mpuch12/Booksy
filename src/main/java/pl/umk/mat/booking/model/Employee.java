@@ -28,11 +28,21 @@ public class Employee {
     private String email;
     @Password
     private String password;
-    private String photoUrl;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_photo_id", referencedColumnName="id")
+    private Photo photo = new Photo();
     @OneToMany(mappedBy = "employee")
     private List<WorkHours> workHoursList = new ArrayList<>();
     @OneToMany(mappedBy = "employee")
     private List<Holiday> leaveList = new ArrayList<>();
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
 
     public Long getId() {
         return id;
@@ -66,13 +76,6 @@ public class Employee {
         this.password = password;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
 
     public List<WorkHours> getWorkHoursList() {
         return workHoursList;

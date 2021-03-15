@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Panel główny</title>
+</head>
+<body>
+<p id="id_message" th:text="${message}" onclick="myFunction('id_message')" th:if="${message  ne null}"></p>
+
+<div id="modify_id" >
+    <form action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id}, field='name')}"  th:object="${employee}">
+        <a>Nazwa</a><br>
+        <input type="text"  th:field="*{name}"><br>
+        <input type="submit" value="Zmień">
+    </form>
+    <form action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id}, field='email')}"  th:object="${employee}">
+        <a>Email</a><br>
+        <input type="email" th:field="*{email}"><br>
+        <input type="submit" value="Zmień">
+    </form>
+
+        <a>Zarządzaj godzinami - IN PROGRESS</a><br>
+        <input type="submit" value="Zmień">
+    </form>
+</div>
+<a th:href="@{/admin/employee/delete(id=${employee.id})}">Usuń</a>
+</body>
+<script>
+    function myFunction(a) {
+        var x = document.getElementById(a);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+</html>

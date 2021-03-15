@@ -27,12 +27,14 @@ public class AdminService {
     private CompanyDetailsRepository companyDetailsRepository;
     private PhotoRepository photoRepository;
     private ServiceRepository serviceRepository;
+    private EmployeeService employeeService;
 
-    public AdminService(EmployeeRepository employeeRepository, CompanyDetailsRepository companyDetailsRepository, PhotoRepository photoRepository, ServiceRepository serviceRepository) {
+    public AdminService(EmployeeRepository employeeRepository, CompanyDetailsRepository companyDetailsRepository, PhotoRepository photoRepository, ServiceRepository serviceRepository, EmployeeService employeeService) {
         this.employeeRepository = employeeRepository;
         this.companyDetailsRepository = companyDetailsRepository;
         this.photoRepository = photoRepository;
         this.serviceRepository = serviceRepository;
+        this.employeeService = employeeService;
     }
 
     public CompanyDetails getCompanyDetails() {
@@ -51,30 +53,41 @@ public class AdminService {
 
     }
 
-    public boolean saveFile(MultipartFile file, String type) {
+    public boolean saveCompanyPhoto(MultipartFile file, String type) {
 
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        Optional<String> fileNameOptional = saveFileInDirectory(file, type);
+
+        if(fileNameOptional.isEmpty())
+            return false;
+
+        String fileName = fileNameOptional.get();
+
+        CompanyDetails companyDetails = companyDetailsRepository.findById(1);
+        Photo photo = new Photo(fileName,type/*, companyDetails*/);
+
+        companyDetails.addPhoto(photo);
+        companyDetailsRepository.save(companyDetails);
+        return true;
+    }
+
+    private Optional<String> saveFileInDirectory(MultipartFile file, String type) {
+        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
         String dir = UPLOAD_DIR;
+        Optional<String> fileName = Optional.empty();
 
         switch (type){
             case "work" -> dir = dir + "work/";
             case "workshop" -> dir = dir + "workshop/";
+            case "employee" -> dir = dir + "employee/";
         }
 
         try {
-            Path path = Paths.get(dir + fileName);
+            Path path = Paths.get(dir + file.getOriginalFilename());
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            fileName = Optional.of(originalFileName.replaceAll(" ", "%20"));
+        } catch (IOException ignored) {}
 
-            String fileNameWithoutSpaces = fileName.replaceAll(" ", "%20");
-            CompanyDetails companyDetails = companyDetailsRepository.findById(1);
-            Photo photo = new Photo(fileNameWithoutSpaces,type, companyDetails);
-
-            companyDetails.addPhoto(photo);
-            companyDetailsRepository.save(companyDetails);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        return fileName;
     }
 
     public void deletePhoto(Long id) {
@@ -106,5 +119,55 @@ public class AdminService {
 
     public pl.umk.mat.booking.model.Service getSpecifiedService(Long id) {
         return serviceRepository.findById(id).get();
+    }
+
+    public boolean addEmployee(Employee employee, MultipartFile file) {
+        final String type = "employee";
+        boolean isSavedWithPhoto = true;
+        Optional<String> fileNameOptional = saveFileInDirectory(file, type);
+        Photo photo;
+        if (fileNameOptional.isEmpty()) {
+            isSavedWithPhoto = false;
+            photo = new Photo("default.jpg", type);
+        }else {
+            String fileName = fileNameOptional.get();
+            photo = new Photo(fileName, type);
+        }
+        employee.setPhoto(photo);
+        employeeService.addWithDefaultRole(employee);
+
+        return isSavedWithPhoto;
+    }
+
+    public boolean deleteEmployee(Long employeeId) {
+        try {
+            employeeRepository.deleteById(employeeId);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public Employee getSpecifiedEmployee(Long id) {
+        return employeeRepository.findById(id).get();
+    }
+
+    public boolean updateEmployee(Employee employee, String field) {
+        Optional<Employee> byId = employeeRepository.findById(employee.getId());
+        if(byId.isPresent()) {
+            Employee employeeSaved = byId.get();
+            switch (field) {
+                case "name" -> employeeSaved.setName(employee.getName());
+                case "email" -> employeeSaved.setEmail(employee.getEmail());
+            }
+            try {
+                employeeRepository.save(employeeSaved);
+                return true;
+            }catch (Exception e){
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 }

@@ -50,7 +50,7 @@
 <div id="workshopPhotos" STYLE="display: none">
     <form  method="post"  th:action="@{/admin/photo/upload(type='workshop')}" enctype="multipart/form-data">
         <div class="form-group">
-            <input type="file" name="file" class="form-control-file">
+            <input type="file" name="file">
         </div>
         <button type="submit" class="btn btn-primary">Upload File</button>
     </form>
@@ -64,6 +64,7 @@
 
 
 <a th:href="@{/admin/service}"><br>Twoje usługi</a>
+<a th:href="@{/admin/employee}"><br>Twoi pracownicy</a>
 
 <script>
     function myFunction(a) {

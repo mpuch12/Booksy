@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.umk.mat.booking.model.CompanyDetails;
+import pl.umk.mat.booking.model.Employee;
 import pl.umk.mat.booking.model.Photo;
 import pl.umk.mat.booking.model.Service;
 import pl.umk.mat.booking.service.AdminService;
@@ -42,11 +43,11 @@ public class AdminController {
     }
 
     @PostMapping("/admin/photo/upload")
-    public String uploadFile(@RequestParam String type, @RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
+    public String uploadPhoto(@RequestParam String type, @RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
         if (file.isEmpty()) {
             attributes.addFlashAttribute("message", "Należy dodać plik");
         }else
-            if(adminService.saveFile(file, type))
+            if(adminService.saveCompanyPhoto(file, type))
                 attributes.addFlashAttribute("message", "Pomyślnie przesłano");
             else
                 attributes.addFlashAttribute("message", "Wystąpił nieoczekiwany błąd");
@@ -55,7 +56,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/photo/delete")
-    public String uploadFile(@RequestParam Long id,RedirectAttributes attributes) {
+    public String deletePhoto(@RequestParam Long id,RedirectAttributes attributes) {
         adminService.deletePhoto(id);
         attributes.addFlashAttribute("message", "Usunięto");
         return "redirect:/admin";
@@ -78,19 +79,63 @@ public class AdminController {
         return "redirect:/admin/service";
     }
 
-    @GetMapping("admin/service/change")
+    @GetMapping("/admin/service/change")
     private String getServiceInfo(@RequestParam Long id, Model model,RedirectAttributes attributes){
         model.addAttribute("service", adminService.getSpecifiedService(id));
         model.addAttribute("employeeList", adminService.getAllEmployee());
         return "modifyService";
     }
 
-    @PostMapping("admin/service/change")
+    @PostMapping("/admin/service/change")
     private String changeServiceInfo (@ModelAttribute Service service, @RequestParam(value = "selected", required = false) long[] selectedEmployees,RedirectAttributes attributes){
         if(adminService.saveService(service, selectedEmployees))
             attributes.addFlashAttribute("message", "Zmiany zostały zaakceptowane pomyślnie");
         else
             attributes.addFlashAttribute("message", "Wystąpił błąd podczas zapisywania zmian");
         return "redirect:/admin/service";
+    }
+
+    @GetMapping("/admin/employee")
+    public String getEmployees(Model model){
+        model.addAttribute("employees", adminService.getAllEmployee());
+        model.addAttribute("employee", new Employee());
+        return "employeePanel";
+    }
+
+    @PostMapping("/admin/employee/add")
+    public String addEmployee(@ModelAttribute Employee employee, @RequestParam("file") MultipartFile file, RedirectAttributes attributes ){
+        if(adminService.addEmployee(employee, file))
+            attributes.addFlashAttribute("message", "Pracownik dodany pomyślnie");
+        else
+            attributes.addFlashAttribute("message", "Pracownik dodany, ale wystąpił błąd podczas zapisywania zdjęcia");
+        return "employeePanel";
+    }
+
+    @PostMapping("/admin/employee/delete")
+    public String deleteEmployee(@RequestParam Long id, RedirectAttributes attributes){
+        boolean isDeletedCorrectly = adminService.deleteEmployee(id);
+        if (isDeletedCorrectly)
+            attributes.addFlashAttribute("message", "Pracownik usunięty pomyślnie");
+        else
+            attributes.addFlashAttribute("message", "Wystąpił błąd podczas usuwania");
+        return "redirect:/admin/employee";
+    }
+
+    @GetMapping("/admin/employee/change")
+    public String getEmployeeInfo(@RequestParam Long id, Model model){
+        model.addAttribute("employee", adminService.getSpecifiedEmployee(id));
+        return "modifyEmployee";
+    }
+
+    @PostMapping("/admin/employee/change")
+    public String changeEmployeeInfo(@ModelAttribute Employee employee,@RequestParam String field, RedirectAttributes attributes){
+        boolean isUpdatedCorrectly = adminService.updateEmployee(employee, field);
+        if(isUpdatedCorrectly)
+            attributes.addFlashAttribute("message", "Zmiany zostały pomyslnie zaakceptowane");
+        else
+            attributes.addFlashAttribute("message", "Wystąpił błąd zapisu");
+
+        String redirectedUrl = "/admin/employee/change?id=" + employee.getId();
+        return "redirect:"+ redirectedUrl;
     }
 }

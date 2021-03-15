@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Panel główny</title>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1>Twoje usługi</h1>
+
+<p id="id_message" th:text="${message}" onclick="myFunction('id_message')" th:if="${message  ne null}"></p>
+
+<button onclick="myFunction('addEmployee_id')">Dodaj pracownika</button>
+<div id="addEmployee_id" STYLE="display: none">
+    <form action="#"  th:action="@{/admin/employee/add}" method="post" th:object="${employee}" enctype="multipart/form-data">
+        <a>Nazwa</a><br>
+        <input type="text" th:field="*{name}"><br>
+        <a>Email</a><br>
+        <input type="email" th:field="*{email}"><br>
+        <a>Hasło</a><br>
+        <input type="password" th:field="*{password}"><br>
+        <a>Zdjęcie</a><br>
+        <input type="file" name="file"><br><br>
+        <a>Dodaj godziny pracy</a><br>
+        <a>IN PROGRESS</a><br>
+        <input type="submit" value="Dodaj">
+    </form>
+</div>
+
+<button onclick="myFunction('showEmployees_id')">Pokaż pracowników</button>
+<div id="showEmployees_id" STYLE="display: none">
+    <table style="width: 100%; border-collapse: collapse" >
+        <tr>
+            <th>Zdjęcie</th>
+            <th>Nazwa</th>
+            <th>Email</th>
+            <th>Godziny</th>
+            <th>Zarządzaj</th>
+        </tr>
+        <tr th:each="employee: ${employees}" >
+            <td><img  th:src="@{${'/employee/' + employee.photo.path}} " width="120" height="120"/></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.email}"></td>
+            <td>ZARZĄDZANIE GODZINAMI</td>
+            <td>
+                <a th:href="@{/admin/employee/change(id=${employee.id})}" >Modyfikuj</a>
+            </td>
+
+        </tr>
+    </table>
+
+
+</div>
+<script>
+    function myFunction(a) {
+        var x = document.getElementById(a);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

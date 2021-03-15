@@ -11,16 +11,12 @@ public class Photo {
     private String alternativeText;
     private String path;
     private String type;
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private CompanyDetails companyDetails;
 
     public Photo(){}
 
-    public Photo(String path, String type, CompanyDetails companyDetails) {
+    public Photo(String path, String type) {
         this.path = path;
         this.type = type;
-        this.companyDetails = companyDetails;
     }
 
     public Long getId() {
@@ -55,11 +51,11 @@ public class Photo {
         this.type = type;
     }
 
-    public CompanyDetails getCompanyDetails() {
+   /* public CompanyDetails getCompanyDetails() {
         return companyDetails;
     }
 
     public void setCompanyDetails(CompanyDetails companyDetails) {
         this.companyDetails = companyDetails;
-    }
+    }*/
 }
