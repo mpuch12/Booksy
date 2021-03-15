@@ -13,7 +13,7 @@
 <h1>Twoje usługi</h1>
 
 <p id="id_message" th:text="${message}" onclick="myFunction('id_message')" th:if="${message  ne null}"></p>
-
+<a th:href="@{/admin}">Powrót</a><br>
 <button onclick="myFunction('addEmployee_id')">Dodaj pracownika</button>
 <div id="addEmployee_id" STYLE="display: none">
     <form action="#"  th:action="@{/admin/employee/add}" method="post" th:object="${employee}" enctype="multipart/form-data">

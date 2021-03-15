@@ -5,6 +5,8 @@
     <title>Panel główny</title>
 </head>
 <body>
+<a th:href="@{/admin/service}">Powrót</a><br>
+
     <div id="modify_id" >
         <form action="#" method="post" th:action="@{/admin/service/change(id=${service.id})}"  th:object="${service}">
             <a>Nazwa</a><br>

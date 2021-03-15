@@ -6,7 +6,7 @@
 </head>
 <body>
 <p id="id_message" th:text="${message}" onclick="myFunction('id_message')" th:if="${message  ne null}"></p>
-
+<a th:href="@{/admin/employee}">Powrót</a><br>
 <div id="modify_id" >
     <form action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id}, field='name')}"  th:object="${employee}">
         <a>Nazwa</a><br>
