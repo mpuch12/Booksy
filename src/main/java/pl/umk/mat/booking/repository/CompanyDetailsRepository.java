@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.Query;
 import pl.umk.mat.booking.model.CompanyDetails;
 
 public interface CompanyDetailsRepository extends JpaRepository<CompanyDetails, Long> {
-    CompanyDetails findById(long i);
-
+    CompanyDetails findById(long id);
 }

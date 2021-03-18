@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    public static final String DEFAULT_ROLE = "USER";
 
     @Bean
     PasswordEncoder getEncoder(){

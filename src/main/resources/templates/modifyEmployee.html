@@ -18,6 +18,17 @@
         <input type="email" th:field="*{email}"><br>
         <input type="submit" value="Zmień">
     </form>
+    <a>Zdjęcie</a>
+    <img th:src="@{${'/employee/'+employee.photo.path}}" width="120" height="120"/>
+    <form  action="#" th:action="@{/admin/employee/change(id=${employee.id}, field='photo')}" method="post" enctype="multipart/form-data" >
+        <input type="file" name="file"><br><br>
+        <input type="submit" value="Zmień" />
+    </form>
+    <form id="change_photo_id" action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id}, field='photo')}"  th:object="${employee}" th:if="${employee.photo == null}">
+        <a>Zdjęcie</a><br>
+        <input type="file" name="file"><br><br>
+        <input type="submit" value="Zmień">
+    </form>
 
         <a>Zarządzaj godzinami - IN PROGRESS</a><br>
         <input type="submit" value="Zmień">
