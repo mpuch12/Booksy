@@ -27,6 +27,15 @@ public class ServiceController {
         return "servicePanel";
     }
 
+    @PostMapping("/admin/service/delete")
+    public String deleteService(@RequestParam Long id, RedirectAttributes attributes){
+        if(serviceService.delete(id))
+            attributes.addFlashAttribute("message", "Usunięto pomyślnie");
+        else
+            attributes.addFlashAttribute("message", "Wystąpił błąd podczas usuwania");
+        return "redirect:/admin/service";
+    }
+
     @PostMapping("/admin/service/add")
     public String addNewService(@ModelAttribute Service service, @RequestParam(value = "selected", required = false) long[] selectedEmployees, RedirectAttributes attributes){
         if(serviceService.saveService(service, selectedEmployees))

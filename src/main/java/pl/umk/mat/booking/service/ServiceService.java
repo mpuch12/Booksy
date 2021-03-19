@@ -46,4 +46,13 @@ public class ServiceService {
     public List<Employee> getAllEmployeeForService() {
         return employeeRepository.findAllByRoles_Role(DEFAULT_ROLE);
     }
+
+    public boolean delete(Long id) {
+        try {
+            serviceRepository.deleteById(id);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }
