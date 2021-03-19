@@ -82,7 +82,12 @@ public class EmployeeService {
             switch (field) {
                 case "name" -> employeeSaved.setName(employee.getName());
                 case "email" -> employeeSaved.setEmail(employee.getEmail());
-                case "photo" -> employeeSaved.setPhoto(saveEmployeePhoto(file));
+                case "photo" -> {
+                    try {
+                        deleteEmployeePhoto(employee.getId());
+                    } catch (Exception ignore) {}
+                    employeeSaved.setPhoto(saveEmployeePhoto(file));
+                }
             }
             try {
                 employeeRepository.save(employeeSaved);
