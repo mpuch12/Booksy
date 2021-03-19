@@ -25,6 +25,9 @@
             </td><br>
             <input type="submit" value="Zmień">
         </form>
+        <form action="#" method="post" th:action="@{/admin/service/delete(id=${service.id})}" >
+            <input type="submit" value="Usuń" >
+        </form>
     </div>
 </body>
 </html>

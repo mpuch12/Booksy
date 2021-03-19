@@ -20,11 +20,9 @@ import java.util.Optional;
 public class PhotoService {
     private static final String UPLOAD_DIR = "src/main/resources/static/";
 
-    private CompanyDetailsRepository companyDetailsRepository;
     private PhotoRepository photoRepository;
 
-    public PhotoService(CompanyDetailsRepository companyDetailsRepository, PhotoRepository photoRepository) {
-        this.companyDetailsRepository = companyDetailsRepository;
+    public PhotoService(PhotoRepository photoRepository) {
         this.photoRepository = photoRepository;
     }
 

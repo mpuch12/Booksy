@@ -34,7 +34,9 @@
         <input type="submit" value="Zmień">
     </form>
 </div>
-<a th:href="@{/admin/employee/delete(id=${employee.id})}">Usuń</a>
+<form  action="#" th:action="@{/admin/employee/delete(id=${employee.id})}" method="post" >
+    <input type="submit" value="Usuń" />
+</form>
 </body>
 <script>
     function myFunction(a) {

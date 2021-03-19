@@ -31,8 +31,9 @@ public class EmployeeControler {
         if(employeeService.addEmployee(employee, file))
             attributes.addFlashAttribute("message", "Pracownik dodany pomyślnie");
         else
-            attributes.addFlashAttribute("message", "Pracownik dodany, ale wystąpił błąd podczas zapisywania zdjęcia");
-        return "employeePanel";
+            attributes.addFlashAttribute("message", "Wystąpił nieoczekiwany błąd");
+
+        return "redirect:/admin/employee";
     }
 
     @PostMapping("/admin/employee/delete")
@@ -53,7 +54,7 @@ public class EmployeeControler {
 
     @PostMapping("/admin/employee/change")
     public String changeEmployeeInfo(@ModelAttribute Employee employee,@RequestParam String field, @RequestParam MultipartFile file, RedirectAttributes attributes){
-        boolean isUpdatedCorrectly = employeeService.updateEmployee(employee, field);
+        boolean isUpdatedCorrectly = employeeService.updateEmployee(employee, field, file);
         if(isUpdatedCorrectly)
             attributes.addFlashAttribute("message", "Zmiany zostały pomyslnie zaakceptowane");
         else

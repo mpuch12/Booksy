@@ -11,6 +11,7 @@ import pl.umk.mat.booking.repository.EmployeeRepository;
 import pl.umk.mat.booking.repository.UserRoleRepository;
 
 import javax.validation.Validator;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,26 +38,17 @@ public class EmployeeService {
     }
 
     public boolean addEmployee(Employee employee, MultipartFile file) {
-        final String type = "employee";
+        employee.setPhoto(saveEmployeePhoto(file));
         boolean isSavedWithPhoto = false;
-        Photo photo = new Photo("default.jpg", type);
-
-        Optional<String> fileNameOptional = photoService.saveFileInDirectory(file, type);
-
-        if (fileNameOptional.isPresent()) {
-            String fileName = fileNameOptional.get();
-            photo = new Photo(fileName, type);
+        if(employee.getPhoto().getPath().equals("default.jpg"))
             isSavedWithPhoto = true;
-        }
-
-        employee.setPhoto(photo);
         addWithDefaultRole(employee);
-
         return isSavedWithPhoto;
     }
 
     public boolean deleteEmployee(Long employeeId) {
         try {
+            deleteEmployeePhoto(employeeId);
             employeeRepository.deleteById(employeeId);
             return true;
         }catch (Exception e){
@@ -64,17 +56,33 @@ public class EmployeeService {
         }
     }
 
+    private void deleteEmployeePhoto(Long employeeId) throws Exception {
+        Employee employee = employeeRepository.findById(employeeId).get();
+        String photoPath = employee.getPhoto().getPath();
+        photoPath = photoPath.replace("%20", " ");
+        if(!photoPath.equals("default.jpg")) {
+            Path path = FileSystems.getDefault().getPath("./src/main/resources/static/employee/", photoPath);
+            try {
+                Files.delete(path);
+            }catch (NoSuchFileException ignore){}
+            catch (Exception e){
+                throw new Exception();
+            }
+        }
+    }
+
     public Employee getSpecifiedEmployee(Long id) {
         return employeeRepository.findById(id).get();
     }
 
-    public boolean updateEmployee(Employee employee, String field) {
+    public boolean updateEmployee(Employee employee, String field, MultipartFile file) {
         Optional<Employee> byId = employeeRepository.findById(employee.getId());
         if(byId.isPresent()) {
             Employee employeeSaved = byId.get();
             switch (field) {
                 case "name" -> employeeSaved.setName(employee.getName());
                 case "email" -> employeeSaved.setEmail(employee.getEmail());
+                case "photo" -> employeeSaved.setPhoto(saveEmployeePhoto(file));
             }
             try {
                 employeeRepository.save(employeeSaved);
@@ -86,6 +94,21 @@ public class EmployeeService {
             return false;
         }
     }
+
+    private Photo saveEmployeePhoto(MultipartFile file) {
+        final String type = "employee";
+        Photo photo = new Photo("default.jpg", type);
+
+        Optional<String> fileNameOptional = photoService.saveFileInDirectory(file, type);
+
+        if (fileNameOptional.isPresent()) {
+            String fileName = fileNameOptional.get();
+            photo = new Photo(fileName, type);
+        }
+
+        return photo;
+    }
+
     public void addWithDefaultRole(Employee employee){
         try {
             validator.validate(employee);
