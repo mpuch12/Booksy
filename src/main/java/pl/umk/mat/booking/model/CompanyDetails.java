@@ -16,14 +16,15 @@ public class CompanyDetails {
     @NotNull
     private String address;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "works_photo_id", referencedColumnName="id")
+    @JoinColumn(name = "works_photo_id", referencedColumnName = "id")
     private List<Photo> photos = new ArrayList<>();
     @OneToMany
     private List<Employee> employees = new ArrayList<>();
 
-    public void addPhoto(Photo photo){
+    public void addPhoto(Photo photo) {
         this.photos.add(photo);
     }
+
     public Long getId() {
         return id;
     }

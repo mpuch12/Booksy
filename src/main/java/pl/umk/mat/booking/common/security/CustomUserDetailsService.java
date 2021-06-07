@@ -1,4 +1,4 @@
-package pl.umk.mat.booking.security;
+package pl.umk.mat.booking.common.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,13 +12,12 @@ import pl.umk.mat.booking.model.UserRole;
 import pl.umk.mat.booking.repository.EmployeeRepository;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
     public CustomUserDetailsService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -26,9 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if(!employeeRepository.existsByEmail(email))
+        if (!employeeRepository.existsByEmail(email))
             throw new UsernameNotFoundException("User not found");
-        Employee employee = employeeRepository.findByEmail(email);
+        var employee = employeeRepository.findByEmail(email);
         return new User(
                 employee.getEmail(),
                 employee.getPassword(),

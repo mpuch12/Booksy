@@ -12,7 +12,8 @@ public class Photo {
     private String path;
     private String type;
 
-    public Photo(){}
+    public Photo() {
+    }
 
     public Photo(String path, String type) {
         this.path = path;

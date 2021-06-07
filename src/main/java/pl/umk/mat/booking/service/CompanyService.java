@@ -37,13 +37,13 @@ public class CompanyService {
     public boolean saveCompanyPhoto(MultipartFile file, String type) {
         Optional<String> fileNameOptional = photoService.saveFileInDirectory(file, type);
 
-        if(fileNameOptional.isEmpty())
+        if (fileNameOptional.isEmpty())
             return false;
 
         String fileName = fileNameOptional.get();
 
         CompanyDetails companyDetails = companyDetailsRepository.findById(1);
-        Photo photo = new Photo(fileName,type);
+        Photo photo = new Photo(fileName, type);
 
         companyDetails.addPhoto(photo);
         companyDetailsRepository.save(companyDetails);

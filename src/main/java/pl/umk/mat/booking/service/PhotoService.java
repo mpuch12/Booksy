@@ -31,7 +31,7 @@ public class PhotoService {
         String dir = UPLOAD_DIR;
         Optional<String> fileName = Optional.empty();
 
-        switch (type){
+        switch (type) {
             case "work" -> dir = dir + "work/";
             case "workshop" -> dir = dir + "workshop/";
             case "employee" -> dir = dir + "employee/";
@@ -41,7 +41,8 @@ public class PhotoService {
             Path path = Paths.get(dir + file.getOriginalFilename());
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             fileName = Optional.of(originalFileName.replaceAll(" ", "%20"));
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
 
         return fileName;
     }

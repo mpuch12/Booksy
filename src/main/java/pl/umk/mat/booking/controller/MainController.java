@@ -9,12 +9,12 @@ public class MainController {
 
 
     @GetMapping("/")
-    public String home(){
+    public String home() {
         return "index";
     }
 
     @GetMapping("/panel")
-    public String mainPanel(){
+    public String mainPanel() {
         return "mainPanel";
     }
 

@@ -1,6 +1,5 @@
 package pl.umk.mat.booking.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +14,7 @@ import java.nio.file.*;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.umk.mat.booking.security.SecurityConfig.DEFAULT_ROLE;
+import static pl.umk.mat.booking.common.security.SecurityConfig.DEFAULT_ROLE;
 
 
 @Service
@@ -33,6 +32,7 @@ public class EmployeeService {
         this.validator = validator;
         this.photoService = photoService;
     }
+
     public List<Employee> getAllEmployee() {
         return employeeRepository.findAll();
     }
@@ -40,7 +40,7 @@ public class EmployeeService {
     public boolean addEmployee(Employee employee, MultipartFile file) {
         employee.setPhoto(saveEmployeePhoto(file));
         boolean isSavedWithPhoto = false;
-        if(employee.getPhoto().getPath().equals("default.jpg"))
+        if (employee.getPhoto().getPath().equals("default.jpg"))
             isSavedWithPhoto = true;
         addWithDefaultRole(employee);
         return isSavedWithPhoto;
@@ -51,7 +51,7 @@ public class EmployeeService {
             deleteEmployeePhoto(employeeId);
             employeeRepository.deleteById(employeeId);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -60,12 +60,12 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(employeeId).get();
         String photoPath = employee.getPhoto().getPath();
         photoPath = photoPath.replace("%20", " ");
-        if(!photoPath.equals("default.jpg")) {
+        if (!photoPath.equals("default.jpg")) {
             Path path = FileSystems.getDefault().getPath("./src/main/resources/static/employee/", photoPath);
             try {
                 Files.delete(path);
-            }catch (NoSuchFileException ignore){}
-            catch (Exception e){
+            } catch (NoSuchFileException ignore) {
+            } catch (Exception e) {
                 throw new Exception();
             }
         }
@@ -77,7 +77,7 @@ public class EmployeeService {
 
     public boolean updateEmployee(Employee employee, String field, MultipartFile file) {
         Optional<Employee> byId = employeeRepository.findById(employee.getId());
-        if(byId.isPresent()) {
+        if (byId.isPresent()) {
             Employee employeeSaved = byId.get();
             switch (field) {
                 case "name" -> employeeSaved.setName(employee.getName());
@@ -85,17 +85,18 @@ public class EmployeeService {
                 case "photo" -> {
                     try {
                         deleteEmployeePhoto(employee.getId());
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                     employeeSaved.setPhoto(saveEmployeePhoto(file));
                 }
             }
             try {
                 employeeRepository.save(employeeSaved);
                 return true;
-            }catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
     }
@@ -114,10 +115,10 @@ public class EmployeeService {
         return photo;
     }
 
-    public void addWithDefaultRole(Employee employee){
+    public void addWithDefaultRole(Employee employee) {
         try {
             validator.validate(employee);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         UserRole defaultRole = userRoleRepository.findByRole(DEFAULT_ROLE);

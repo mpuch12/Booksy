@@ -16,7 +16,8 @@
 <a th:href="@{/admin}">Powrót</a><br>
 <button onclick="myFunction('addEmployee_id')">Dodaj pracownika</button>
 <div id="addEmployee_id" STYLE="display: none">
-    <form action="#"  th:action="@{/admin/employee/add}" method="post" th:object="${employee}" enctype="multipart/form-data">
+    <form action="#" th:action="@{/admin/employee/add}" method="post" th:object="${employee}"
+          enctype="multipart/form-data">
         <a>Nazwa</a><br>
         <input type="text" th:field="*{name}"><br>
         <a>Email</a><br>
@@ -33,7 +34,7 @@
 
 <button onclick="myFunction('showEmployees_id')">Pokaż pracowników</button>
 <div id="showEmployees_id" STYLE="display: none">
-    <table style="width: 100%; border-collapse: collapse" >
+    <table style="width: 100%; border-collapse: collapse">
         <tr>
             <th>Zdjęcie</th>
             <th>Nazwa</th>
@@ -41,13 +42,13 @@
             <th>Godziny</th>
             <th>Zarządzaj</th>
         </tr>
-        <tr th:each="employee: ${employees}" >
-            <td><img  th:src="@{${'/employee/' + employee.photo.path}} " width="120" height="120"/></td>
+        <tr th:each="employee: ${employees}">
+            <td><img th:src="@{${'/employee/' + employee.photo.path}} " width="120" height="120"/></td>
             <td th:text="${employee.name}"></td>
             <td th:text="${employee.email}"></td>
             <td>ZARZĄDZANIE GODZINAMI</td>
             <td>
-                <a th:href="@{/admin/employee/change(id=${employee.id})}" >Modyfikuj</a>
+                <a th:href="@{/admin/employee/change(id=${employee.id})}">Modyfikuj</a>
             </td>
 
         </tr>

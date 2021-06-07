@@ -1,4 +1,4 @@
-package pl.umk.mat.booking.security;
+package pl.umk.mat.booking.common.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,18 +12,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String DEFAULT_ROLE = "USER";
 
     @Bean
-    PasswordEncoder getEncoder(){
+    PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-        .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/panel/**").hasAuthority("USER")
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-        .and()
-        .formLogin();
+                .and()
+                .formLogin();
     }
 }

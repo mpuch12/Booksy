@@ -1,15 +1,13 @@
 package pl.umk.mat.booking.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.umk.mat.booking.model.Employee;
 import pl.umk.mat.booking.repository.EmployeeRepository;
 import pl.umk.mat.booking.repository.ServiceRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static pl.umk.mat.booking.security.SecurityConfig.DEFAULT_ROLE;
+import static pl.umk.mat.booking.common.security.SecurityConfig.DEFAULT_ROLE;
 
 @Service
 public class ServiceService {
@@ -30,14 +28,14 @@ public class ServiceService {
     }
 
     public boolean saveService(pl.umk.mat.booking.model.Service service, long[] selectedEmployees) {
-        if(selectedEmployees != null)
+        if (selectedEmployees != null)
             for (long selectedEmployee : selectedEmployees)
                 if (employeeRepository.existsById(selectedEmployee))
                     service.getSelectedEmployees().add(employeeRepository.findById(selectedEmployee).get());
 
         try {
             serviceRepository.save(service);
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -51,7 +49,7 @@ public class ServiceService {
         try {
             serviceRepository.deleteById(id);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

@@ -21,8 +21,8 @@ public class Service {
     @NotNull
     @ManyToMany
     @JoinTable(name = "employee_services",
-            joinColumns = {@JoinColumn(name="service_id", referencedColumnName="id")},
-            inverseJoinColumns = {@JoinColumn(name="employee_id", referencedColumnName="id")}
+            joinColumns = {@JoinColumn(name = "service_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "employee_id", referencedColumnName = "id")}
     )
     private List<Employee> selectedEmployees = new ArrayList<>();
 

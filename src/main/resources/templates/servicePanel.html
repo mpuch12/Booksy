@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Panel główny</title>
-<style>
-    table, td, th {
-        border: 1px solid black;
-    }
-</style>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
 <h1>Twoje usługi</h1>
@@ -16,7 +16,7 @@
 <a th:href="@{/admin}">Powrót</a><br>
 <button onclick="myFunction('addService_id')">Dodaj usługę</button>
 <div id="addService_id" STYLE="display: none">
-    <form action="#"  th:action="@{/admin/service/add}" method="post" th:object="${service}">
+    <form action="#" th:action="@{/admin/service/add}" method="post" th:object="${service}">
         <a>Nazwa</a><br>
         <input type="text" th:field="*{name}"><br>
         <a>Cena</a><br>
@@ -36,7 +36,7 @@
 
 <button onclick="myFunction('showService_id')">Pokaż usługi</button>
 <div id="showService_id" STYLE="display: none">
-    <table style="width: 100%; border-collapse: collapse" >
+    <table style="width: 100%; border-collapse: collapse">
         <tr>
             <th>Nazwa</th>
             <th>Cena</th>
@@ -44,15 +44,15 @@
             <th>Pracownicy</th>
             <th>Zarządzaj</th>
         </tr>
-        <tr th:each="service: ${serviceList}" th:object="${service}" >
+        <tr th:each="service: ${serviceList}" th:object="${service}">
             <td th:text="*{name}"></td>
             <td th:text="*{price}"></td>
             <td th:text="*{timeOfServiceInMinutes}"></td>
             <td>
-                <li th:each="employee: *{selectedEmployees}" th:text="${employee.name}"> </li>
+                <li th:each="employee: *{selectedEmployees}" th:text="${employee.name}"></li>
             </td>
             <td>
-                <a class="ui-button" th:href="@{/admin/service/change(id=${service.id})}" >Modyfikuj</a>
+                <a class="ui-button" th:href="@{/admin/service/change(id=${service.id})}">Modyfikuj</a>
             </td>
 
         </tr>

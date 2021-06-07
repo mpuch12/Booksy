@@ -1,6 +1,5 @@
 package pl.umk.mat.booking.controller.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +23,7 @@ public class CompanyController {
     }
 
     @GetMapping("/admin")
-    public String adminPanel(Model model){
+    public String adminPanel(Model model) {
         CompanyDetails companyDetails = companyService.getCompanyDetails();
         List<Photo> photos = companyDetails.getPhotos();
         model.addAttribute("company", companyDetails);
@@ -34,9 +33,9 @@ public class CompanyController {
     }
 
     @PostMapping("/admin/update")
-    public String update(@RequestParam String field, @ModelAttribute CompanyDetails companyDetails, RedirectAttributes attributes){
+    public String update(@RequestParam String field, @ModelAttribute CompanyDetails companyDetails, RedirectAttributes attributes) {
         companyService.updateCompanyDetails(companyDetails, field);
-        attributes.addFlashAttribute("message","Zmiany zostały zaakceptowane");
+        attributes.addFlashAttribute("message", "Zmiany zostały zaakceptowane");
         return "redirect:/admin";
     }
 
@@ -44,8 +43,7 @@ public class CompanyController {
     public String uploadPhoto(@RequestParam String type, @RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
         if (file.isEmpty()) {
             attributes.addFlashAttribute("message", "Należy dodać plik");
-        }else
-        if(companyService.saveCompanyPhoto(file, type))
+        } else if (companyService.saveCompanyPhoto(file, type))
             attributes.addFlashAttribute("message", "Pomyślnie przesłano");
         else
             attributes.addFlashAttribute("message", "Wystąpił nieoczekiwany błąd");
@@ -54,7 +52,7 @@ public class CompanyController {
     }
 
     @PostMapping("/admin/photo/delete")
-    public String deletePhoto(@RequestParam Long id,RedirectAttributes attributes) {
+    public String deletePhoto(@RequestParam Long id, RedirectAttributes attributes) {
         companyService.deleteCompanyPhoto(id);
         attributes.addFlashAttribute("message", "Usunięto");
         return "redirect:/admin";

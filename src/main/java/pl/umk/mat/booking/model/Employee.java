@@ -1,8 +1,6 @@
 package pl.umk.mat.booking.model;
 
 
-
-
 import pl.umk.mat.booking.validation.constraints.Password;
 
 import javax.persistence.*;
@@ -19,7 +17,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<UserRole> roles = new HashSet<>();
     @NotNull
     private String name;
@@ -29,7 +27,7 @@ public class Employee {
     @Password
     private String password;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_photo_id", referencedColumnName="id")
+    @JoinColumn(name = "employee_photo_id", referencedColumnName = "id")
     private Photo photo = new Photo();
     @OneToMany(mappedBy = "employee")
     private List<WorkHours> workHoursList = new ArrayList<>();
@@ -100,7 +98,6 @@ public class Employee {
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
-
 
 
 }

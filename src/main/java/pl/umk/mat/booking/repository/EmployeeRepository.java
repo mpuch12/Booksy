@@ -10,7 +10,10 @@ import java.util.Set;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Employee findByEmail(String email);
+
     void deleteById(Long id);
+
     List<Employee> findAllByRoles_Role(String role);
+
     boolean existsByEmail(String email);
 }
