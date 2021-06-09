@@ -12,7 +12,7 @@
 <a>Nazwa firmy</a>
 <button onclick="myFunction('formName')">Pokaż</button>
 
-<form id="formName" STYLE="display: none" action="#" th:action="@{admin/update(field='name')}" method="post"
+<form id="formName" STYLE="display: none" action="#" th:action="@{admin/update}" method="post"
       th:object="${company}">
     <input th:field="${company.name}">
     <input type="submit" value="Zmień"/>
@@ -22,7 +22,7 @@
 <a><br>Adres firmy</a>
 <button onclick="myFunction('formAddress')">Pokaż</button>
 
-<form id="formAddress" STYLE="display: none" action="#" th:action="@{admin/update(field='address')}" method="post"
+<form id="formAddress" STYLE="display: none" th:action="@{admin/update}" method="post"
       th:object="${company}">
     <input th:field="${company.address}">
     <input type="submit" value="Zmień"/>
@@ -37,10 +37,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Upload File</button>
     </form>
-    <tr th:each="work: ${workPhotos}" th:object="${photo}">
+    <tr th:each="work: ${company.photos}" th:object="${photo}">
         <div>
             <img th:src="@{${'/work/'+work.path}}" width="120" height="120"/>
-            <form action="#" th:action="@{/admin/photo/delete(id=${work.id})}" method="post">
+            <form th:action="@{/admin/photo/delete(id=${work.id})}" method="post">
                 <input type="submit" value="Usuń"/>
             </form>
         </div>
@@ -56,7 +56,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Upload File</button>
     </form>
-    <tr th:each="workshop: ${workshopPhotos}" th:object="${photo}">
+    <tr th:each="workshop: ${company.photos}" th:object="${photo}">
         <img th:src="@{${'/workshop/' + workshop.path}}" width="120" height="120"/>
         <form action="#" th:action="@{/admin/photo/delete(id=${workshop.id})}" method="post">
             <input type="submit" value="Usuń"/>
@@ -65,8 +65,8 @@
 </div>
 
 
-<a th:href="@{/admin/service}"><br>Twoje usługi</a>
-<a th:href="@{/admin/employee}"><br>Twoi pracownicy</a>
+<a th:href="@{/admin/service/all}"><br>Twoje usługi</a>
+<a th:href="@{/admin/employee/all}"><br>Twoi pracownicy</a>
 
 <script>
     function myFunction(a) {

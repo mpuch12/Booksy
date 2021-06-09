@@ -6,15 +6,15 @@
 </head>
 <body>
 <p id="id_message" th:text="${message}" onclick="myFunction('id_message')" th:if="${message  ne null}"></p>
-<a th:href="@{/admin/employee}">Powrót</a><br>
+<a th:href="@{/admin/employee/all}">Powrót</a><br>
 <div id="modify_id">
-    <form action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id}, field='name')}"
+    <form action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id})}"
           th:object="${employee}">
         <a>Nazwa</a><br>
         <input type="text" th:field="*{name}"><br>
         <input type="submit" value="Zmień">
     </form>
-    <form action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id}, field='email')}"
+    <form action="#" method="post" th:action="@{/admin/employee/change(id=${employee.id})}"
           th:object="${employee}">
         <a>Email</a><br>
         <input type="email" th:field="*{email}"><br>
@@ -22,21 +22,20 @@
     </form>
     <a>Zdjęcie</a>
     <img th:src="@{${'/employee/'+employee.photo.path}}" width="120" height="120"/>
-    <form action="#" th:action="@{/admin/employee/change(id=${employee.id}, field='photo')}" method="post"
+    <form action="#" th:action="@{/admin/employee/change(id=${employee.id})}" method="post"
           enctype="multipart/form-data">
         <input type="file" name="file"><br><br>
         <input type="submit" value="Zmień"/>
     </form>
-    <form id="change_photo_id" action="#" method="post"
-          th:action="@{/admin/employee/change(id=${employee.id}, field='photo')}" th:object="${employee}"
-          th:if="${employee.photo == null}">
-        <a>Zdjęcie</a><br>
-        <input type="file" name="file"><br><br>
-        <input type="submit" value="Zmień">
-    </form>
-
-    <a>Zarządzaj godzinami - IN PROGRESS</a><br>
-    <input type="submit" value="Zmień">
+    <br>
+    <button onclick="myFunction('addHoliday')">Dodaj urlop</button>
+    <form id="addHoliday" method="post" STYLE="display: none"
+          th:action="@{/admin/employee/change(id=${employee.id})}" th:object="${employee}" >
+        <a>Początek</a>
+        <input type="datetime-local" name="begin"><br>
+        <a>Koniec</a>
+        <input type="datetime-local" name="end"><br>
+        <input type="submit" value="Dodaj">
     </form>
 </div>
 <form action="#" th:action="@{/admin/employee/delete(id=${employee.id})}" method="post">

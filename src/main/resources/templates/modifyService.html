@@ -5,10 +5,10 @@
     <title>Panel główny</title>
 </head>
 <body>
-<a th:href="@{/admin/service}">Powrót</a><br>
+<a th:href="@{/admin/service/all}">Powrót</a><br>
 
 <div id="modify_id">
-    <form action="#" method="post" th:action="@{/admin/service/change(id=${service.id})}" th:object="${service}">
+    <form action="#" method="post" th:action="@{/admin/service/change(id=${facilityService.id})}" th:object="${facilityService}">
         <a>Nazwa</a><br>
         <input type="text" th:field="*{name}"><br>
         <a>Cena</a><br>
@@ -18,9 +18,9 @@
         <a>Pracownicy</a><br>
         <td th:if="${employeeList ne null}">
             <a th:each="employee : ${employeeList}">
-                <input th:if="${#lists.contains(service.selectedEmployees,employee)}" type="checkbox" name="selected"
+                <input th:if="${#lists.contains(facilityService.selectedEmployees,employee)}" type="checkbox" name="selected"
                        th:value="${employee.id}" checked/>
-                <input th:if="${not #lists.contains(service.selectedEmployees,employee)}" type="checkbox"
+                <input th:if="${not #lists.contains(facilityService.selectedEmployees,employee)}" type="checkbox"
                        name="selected" th:value="${employee.id}"/>
                 <label th:text="${employee.name}"></label><br>
             </a>
@@ -28,7 +28,7 @@
         <br>
         <input type="submit" value="Zmień">
     </form>
-    <form action="#" method="post" th:action="@{/admin/service/delete(id=${service.id})}">
+    <form action="#" method="post" th:action="@{/admin/service/delete(id=${facilityService.id})}">
         <input type="submit" value="Usuń">
     </form>
 </div>

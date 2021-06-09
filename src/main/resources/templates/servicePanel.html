@@ -16,7 +16,7 @@
 <a th:href="@{/admin}">Powrót</a><br>
 <button onclick="myFunction('addService_id')">Dodaj usługę</button>
 <div id="addService_id" STYLE="display: none">
-    <form action="#" th:action="@{/admin/service/add}" method="post" th:object="${service}">
+    <form action="#" th:action="@{/admin/service/add}" method="post" th:object="${facilityService}">
         <a>Nazwa</a><br>
         <input type="text" th:field="*{name}"><br>
         <a>Cena</a><br>
@@ -44,7 +44,7 @@
             <th>Pracownicy</th>
             <th>Zarządzaj</th>
         </tr>
-        <tr th:each="service: ${serviceList}" th:object="${service}">
+        <tr th:each="facilityService: ${facilityServiceList}" th:object="${facilityService}">
             <td th:text="*{name}"></td>
             <td th:text="*{price}"></td>
             <td th:text="*{timeOfServiceInMinutes}"></td>
@@ -52,7 +52,7 @@
                 <li th:each="employee: *{selectedEmployees}" th:text="${employee.name}"></li>
             </td>
             <td>
-                <a class="ui-button" th:href="@{/admin/service/change(id=${service.id})}">Modyfikuj</a>
+                <a class="ui-button" th:href="@{/admin/service(id=${facilityService.id})}">Modyfikuj</a>
             </td>
 
         </tr>

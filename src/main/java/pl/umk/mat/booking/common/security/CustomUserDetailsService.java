@@ -7,9 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import pl.umk.mat.booking.model.Employee;
-import pl.umk.mat.booking.model.UserRole;
-import pl.umk.mat.booking.repository.EmployeeRepository;
+import pl.umk.mat.booking.common.model.UserRole;
+import pl.umk.mat.booking.common.repository.EmployeeRepository;
 
 import java.util.HashSet;
 import java.util.Set;
